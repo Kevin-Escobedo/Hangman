@@ -11,8 +11,10 @@ class HangmanGUI:
         self.root_window.geometry("300x150")
         self.root_window.title("Hangman")
         self.root_window.resizable(0, 0)
-        self.enter_letter = tkinter.Entry(self.root_window)
+        self.enter_letter = tkinter.Entry(self.root_window, width = 5)
         self.game = HangmanGame()
+        self.past_letters = tkinter.StringVar()
+        self.lines = tkinter.StringVar()
 
     def resource_path(self, relative_path):
         '''Get absolute path to resource, works for dev and for PyInstaller'''
@@ -24,8 +26,15 @@ class HangmanGUI:
         return self.game.tries != 0 and self.game.num_letter != 0
 
     def run(self):
+        tkinter.Label(self.root_window, textvariable = self.lines).grid(row = 0, column = 0)
+        tkinter.Label(self.root_window, text = "Guess a Letter: ").grid(row = 1, column = 0)
+
+        self.enter_letter.grid(row = 1, column = 1)
+
         if len(self.game.guessed_letters) != 0:
-                pass
+                self.past_letters.set(str(self.game.guessed_letters))
+
+        self.lines.set(self.game.show_lines)
         self.root_window.mainloop()
 
 
