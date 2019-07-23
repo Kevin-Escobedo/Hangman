@@ -44,7 +44,7 @@ class HangmanGame:
 
     def update_game(self, guess:str):
         if self.check_guess(guess):
-            for i in range(len(self.word)):
+            for i, letter in enumerate(self.word):
                 if self.word[i] == guess:
                     self.num_letter -= 1
                     self.show_lines = self.update_hidden_word(i)
