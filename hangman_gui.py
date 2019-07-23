@@ -8,16 +8,17 @@ import sys
 class HangmanGUI:
     def __init__(self):
         self.root_window = tkinter.Tk()
-        self.root_window.geometry("300x150")
+        self.root_window.configure(background = "white")
+        self.root_window.geometry("300x250")
         self.root_window.title("Hangman")
-        self.root_window.resizable(0, 0)
+        self.root_window.resizable(0,0)
         self.root_window.iconbitmap(self.resource_path("hangman_icon.ico"))
         self.enter_letter = tkinter.Entry(self.root_window, width = 6)
         self.game = HangmanGame(word_bank = self.resource_path("hangman_words.txt"))
         self.past_letters = tkinter.StringVar()
         self.lines = tkinter.StringVar()
         self.error_message = tkinter.StringVar()
-        self.tries = tkinter.StringVar()
+        self.show_pic = tkinter.Label(self.root_window)
 
     def resource_path(self, relative_path):
         '''Get absolute path to resource, works for dev and for PyInstaller'''
@@ -56,46 +57,58 @@ class HangmanGUI:
             try:
                 self.game.update_game(guess)
                 self.error_message.set("")
+                img = tkinter.PhotoImage(file = self.resource_path("hangman_{}.gif".format(self.game.tries)))
+                self.show_pic.configure(image = img)
+                self.show_pic.image = img
             except TypeError:
                 pass
             if len(self.game.guessed_letters) > 0:
-                self.past_letters.set(str(self.game.guessed_letters))
+                self.past_letters.set(self.show_past_letters())
             self.lines.set(self.game.show_lines)
-            self.tries.set("Tries Left: {}".format(self.game.tries))
             if self.game.tries == 0:
                 self.lines.set(self.game.word)
-                self.tries.set("Game Over")
+                self.error_message.set("Game Over")
         else:
             self.lines.set(self.game.word)
-            self.tries.set("Game Over")
+            self.error_message.set("Game Over")
 
     def key(self, event):
         '''Handles keyboard input'''
         if event.keysym == "Return":
             self.check_guess()
 
+    def show_past_letters(self):
+        '''Gets the guessed letters from the set'''
+        past_string = ""
+        temp_list = list(self.game.guessed_letters)
+        for letter in temp_list:
+            past_string += " {} ".format(letter)
+        return past_string.strip()
+
     def run(self):
-        tkinter.Label(self.root_window, textvariable = self.lines).pack()
+        tkinter.Label(self.root_window, textvariable = self.lines, background = "white").pack()
         self.enter_letter.pack()
 
         guess_button = tkinter.Button(self.root_window, text = "Guess",  command = self.check_guess)
         guess_button.pack()
 
-        tkinter.Label(self.root_window, textvariable = self.past_letters).pack()
-        tkinter.Label(self.root_window, textvariable = self.tries).pack()
+        tkinter.Label(self.root_window, textvariable = self.past_letters, background = "white").pack()
 
-        tkinter.Label(self.root_window, textvariable = self.error_message).pack()
+        img = tkinter.PhotoImage(file = self.resource_path("hangman_{}.gif".format(self.game.tries)))
+
+        self.show_pic.configure(image = img)
+    
+        self.show_pic.pack()
+
+        tkinter.Label(self.root_window, textvariable = self.error_message, background = "white").pack()
 
 
         if len(self.game.guessed_letters) > 0:
-            self.past_letters.set(str(self.game.guessed_letters))
+            self.past_letters.set(self.show_past_letters())
 
         self.lines.set(self.game.show_lines)
 
-
         self.root_window.bind("<KeyPress>", self.key)
-
-        self.tries.set("Tries Left: {}".format(self.game.tries))
 
         self.root_window.mainloop()
 
