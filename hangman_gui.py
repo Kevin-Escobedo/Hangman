@@ -13,7 +13,7 @@ class HangmanGUI:
         self.root_window.resizable(0, 0)
         self.root_window.iconbitmap(self.resource_path("hangman_icon.ico"))
         self.enter_letter = tkinter.Entry(self.root_window, width = 6)
-        self.game = HangmanGame()
+        self.game = HangmanGame(word_bank = self.resource_path("hangman_words.txt"))
         self.past_letters = tkinter.StringVar()
         self.lines = tkinter.StringVar()
         self.error_message = tkinter.StringVar()

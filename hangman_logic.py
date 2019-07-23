@@ -1,6 +1,7 @@
 class HangmanGame:
-    def __init__(self, tries = 6):
+    def __init__(self, tries = 6, word_bank = "hangman_words.txt"):
         self.tries = tries
+        self.word_bank = word_bank
         self.word = self.get_word()
         self.guessed_letters = set()
         self.show_lines = self.generate_lines(self.word)
@@ -8,8 +9,11 @@ class HangmanGame:
 
     def get_word(self):
         from random import randrange
-        file = open("hangman_words.txt", "r").readlines()
-        return file[randrange(len(file))].upper().strip()
+        file = open("{}".format(self.word_bank), "r")
+        L = file.readlines()
+        file.close()
+        word = L[randrange(len(L))].upper().strip()
+        return word
 
     def generate_lines(self, word:str):
         hidden_word = ""
