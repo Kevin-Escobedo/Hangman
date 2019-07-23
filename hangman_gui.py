@@ -11,6 +11,7 @@ class HangmanGUI:
         self.root_window.geometry("300x150")
         self.root_window.title("Hangman")
         self.root_window.resizable(0, 0)
+        self.root_window.iconbitmap(self.resource_path("hangman_icon.ico"))
         self.enter_letter = tkinter.Entry(self.root_window, width = 6)
         self.game = HangmanGame()
         self.past_letters = tkinter.StringVar()
