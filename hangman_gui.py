@@ -14,7 +14,7 @@ class HangmanGUI:
         self.root_window.resizable(0,0)
         self.root_window.iconbitmap(self.resource_path("hangman_icon.ico"))
         self.enter_letter = tkinter.Entry(self.root_window, width = 6)
-        self.game = HangmanGame(word_bank = self.resource_path("hangman_words.txt"))
+        self.game = HangmanGame(word_bank = self.resource_path("Words/other_words.txt"))
         self.past_letters = tkinter.StringVar()
         self.lines = tkinter.StringVar()
         self.error_message = tkinter.StringVar()
@@ -57,7 +57,7 @@ class HangmanGUI:
             try:
                 self.game.update_game(guess)
                 self.error_message.set("")
-                img = tkinter.PhotoImage(file = self.resource_path("hangman_{}.gif".format(self.game.tries)))
+                img = tkinter.PhotoImage(file = self.resource_path("States/hangman_{}.gif".format(self.game.tries)))
                 self.show_pic.configure(image = img)
                 self.show_pic.image = img
             except TypeError:
@@ -94,7 +94,7 @@ class HangmanGUI:
 
         tkinter.Label(self.root_window, textvariable = self.past_letters, background = "white").pack()
 
-        img = tkinter.PhotoImage(file = self.resource_path("hangman_{}.gif".format(self.game.tries)))
+        img = tkinter.PhotoImage(file = self.resource_path("States/hangman_{}.gif".format(self.game.tries)))
 
         self.show_pic.configure(image = img)
     
